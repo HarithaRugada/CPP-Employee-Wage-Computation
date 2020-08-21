@@ -30,19 +30,11 @@ struct EmpWageBuilder
         fileStream.open("employeeDetails.csv", ios::out | ios::app);
         srand(time(0));
 
-        for(int companyCount = 1; companyCount <= 2; companyCount++)
-        {
             for(int monthCount = 1; monthCount <= months; monthCount++)
             {
                 cout << "Month > " << monthCount << endl;
                 for(int employeeCount = 1; employeeCount <= employees; employeeCount++)
                 {
-                    fileStream << companyName << ",";
-                    fileStream << wagePerHour << ",";
-                    fileStream << workingDaysPerMonth << ",";
-                    fileStream << maximumWorkingHours << ",";
-                    fileStream << monthCount << ",";
-                    fileStream << employeeCount << ",";
                     cout << "Employee ID > " << employeeCount << endl;
                     int day = 1;
                     int totalWorkingHours = 0;
@@ -66,19 +58,26 @@ struct EmpWageBuilder
 
                         if((totalWorkingHours + employeeHours) <= maximumWorkingHours)
                         {
+                            fileStream << companyName << ",";
+                            fileStream << wagePerHour << ",";
+                            fileStream << workingDaysPerMonth << ",";
+                            fileStream << maximumWorkingHours << ",";
+                            fileStream << monthCount << ",";
+                            fileStream << employeeCount << ",";
+                            fileStream << day << ",";
                             cout << "Employee Daily Wage is " << wagePerHour * employeeHours << " on Day > " << day << endl;
                             totalWage += wagePerHour * employeeHours;
                             totalWorkingHours += employeeHours;
                             day++;
                             fileStream << wagePerHour * employeeHours << ",";
+                            fileStream << totalWage << "," << totalWorkingHours << "\n";
                         }
                     }
                     cout << "Total wage for the month > " << totalWage << endl;
                     cout << "Total working hours > " << totalWorkingHours << endl << endl;
-                    fileStream << totalWage << "," << totalWorkingHours << "\n";
                 }
             }
-        }
+    
         fileStream.close();
     }
 };
@@ -88,7 +87,8 @@ int main()
     fstream fileStream;
 
     fileStream.open("employeeDetails.csv", ios::out | ios::trunc);
-    fileStream << "Company Name, Wage Per Hour, Working Days, Maximum Working Hours, Month, Employee ID, Day 1, Day 2, Day 3, Day 4, Day 5, Day 6, Day 7, Day 8, Day 9, Day 10, Day 11, Day 12, Day 13, Day 14, Day 15, Day 16, Day 17, Day 18, Day 19, Day 20, Total Wage, Total Working Hours" << "\n";
+    fileStream << "COMPANY NAME, WAGE PER HOUR, WORKING DAYS, MAXIMUM WORKING HOURS, MONTH, EMPLOYEE ID, DAY, WAGE, TOTAL WAGE, TOTAL WORKING HOURS"<< "\n";
+    fileStream.close();
     cout << "Welcome to Employee Wage Computation Problem" << endl;
 
     //string companyName, int wagePerHour, int workingDaysPerMonth, int maximumWorkingHours, int employees, int months
