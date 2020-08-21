@@ -11,7 +11,8 @@ int PART_TIME_HOURS = 4;
 struct CompanyEmpWage
 {
     string companyName;
-    int wagePerHour = 0, workingDaysPerMonth = 0, maximumWorkingHours = 0, employees = 0, months = 0;
+    int wagePerHour = 0, workingDaysPerMonth = 0, maximumWorkingHours = 0, employees = 0, months = 0, totalWage;
+    vector<int> dailyWage;
 
     public :
     void companyDetails(string companyName, int wagePerHour, int workingDaysPerMonth, int maximumWorkingHours, int employees, int months);
@@ -21,6 +22,10 @@ struct CompanyEmpWage
     int getMaximumWorkingHours();
     int getEmployees();
     int getMonths();
+    vector<int> getDailyWage();
+    void setDailyWage(vector<int> dailyWage);
+    int getTotalWage();
+    void setTotalWage(int totalWage);
 };
 
 void CompanyEmpWage::companyDetails(string companyName, int wagePerHour, int workingDaysPerMonth, int maximumWorkingHours, int employees, int months)
@@ -63,6 +68,26 @@ int CompanyEmpWage::getMonths()
     return months;
 }
 
+vector<int> CompanyEmpWage::getDailyWage()
+{
+    return dailyWage;
+}
+
+void CompanyEmpWage::setDailyWage(vector<int> dailyWage)
+{
+    this -> dailyWage = dailyWage;
+}
+
+int CompanyEmpWage::getTotalWage()
+{
+    return totalWage;
+}
+
+void CompanyEmpWage::setTotalWage(int totalWage)
+{
+    this -> totalWage = totalWage;
+}
+
 struct WageComputation
 {
     vector<CompanyEmpWage> companyWage;
@@ -74,6 +99,7 @@ struct WageComputation
     void calculate(CompanyEmpWage companyEmpWage)
     {
         int employeeHours, totalWage = 0;
+        vector<int> dailyWage;
         fstream fileStream;
 
         fileStream.open("employeeDetails.csv", ios::out | ios::app);
@@ -116,6 +142,9 @@ struct WageComputation
                         fileStream << day << ",";
                         cout << "Employee Daily Wage is " << companyEmpWage.getWagePerHour() * employeeHours << " on Day > " << day << endl;
                         totalWage += companyEmpWage.getWagePerHour() * employeeHours;
+                        dailyWage.push_back(companyEmpWage.getWagePerHour() * employeeHours);
+                        companyEmpWage.setDailyWage(dailyWage);
+                        companyEmpWage.setTotalWage(totalWage);
                         totalWorkingHours += employeeHours;
                         day++;
                         fileStream << companyEmpWage.getWagePerHour() * employeeHours << ",";
@@ -143,6 +172,7 @@ int main()
     //string companyName, int wagePerHour, int workingDaysPerMonth, int maximumWorkingHours, int employees, int months
     struct CompanyEmpWage empWage[2];
     struct WageComputation empWageComputation;
+    struct CompanyEmpWage obj;
     
     empWage[0].companyDetails("abc", 15, 20, 120, 3, 2);
     empWageComputation.calculate(empWage[0]);
