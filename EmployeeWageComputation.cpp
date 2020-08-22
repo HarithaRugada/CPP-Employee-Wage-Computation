@@ -98,7 +98,7 @@ struct WageComputation
 
     void calculate(CompanyEmpWage companyEmpWage)
     {
-        int employeeHours, totalWage = 0;
+        int employeeHours, totalWage = 0, companyTotalWage = 0;
         vector<int> dailyWage;
         fstream fileStream;
 
@@ -152,11 +152,13 @@ struct WageComputation
                     }
                 }
                 cout << "Total wage for the month > " << totalWage << endl;
+                companyTotalWage += totalWage;
                 cout << "Total working hours > " << totalWorkingHours << endl << endl;
                 addCompany(companyEmpWage);
             }
         }
         fileStream.close();
+        cout << "Total wage for " << companyEmpWage.getCompanyName() << " company is > " << companyTotalWage << endl << endl;
     }
 };
 
